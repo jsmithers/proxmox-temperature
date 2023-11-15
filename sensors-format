@@ -1,0 +1,18 @@
+#!/bin/bash
+PACKAGE_NAME="coretemp-isa-0000"
+
+
+JSON="{"
+sensorData=`sensors -j coretemp-isa-0000 | grep -v 'coretemp-isa-0000' | grep ":{\|_input\":" | sed -z 's/":{\n/:/g' |  cut -d ':' -f1,3 | sed 's/.*"//g' | grep 'Core' | sed 's/Core //g' | sed 's/ //g' | sed 's/,//g'`;
+for data in ${sensorData[@]}; do
+  temperature=`echo $data | cut -d ':' -f2`
+  cpu_name=`echo $data | cut -d ':' -f1`
+
+  cpu_json="\"cpu.$cpu_name\": \"$temperature\","
+  JSON="$JSON $cpu_json"
+done
+
+JSON=`echo $JSON | sed 's/,$//g'`
+JSON="$JSON }"
+
+echo $JSON
