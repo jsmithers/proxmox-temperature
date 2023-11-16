@@ -1,5 +1,5 @@
 # Proxmox Temperature
-These scripts are for enabling temperature reporting on Proxmox hosts. This functionality relies on the `lm-sensors` package. The `sensors-format` script simplifies the output of the `sensors -j` command to just `{ "cpu.0": "...", ...}`.
+These scripts are for enabling temperature reporting on Proxmox hosts. This functionality relies on the `lm-sensors` package. The `sensors-format` script simplifies the output of the `sensors -j` command to just `{ "cpu.0": "...", ...}`. All temperatures are reported in calcius. 
 
 The `enable-temperature-monitor.sh` script performs four operations:
 1. Installs the `lm-sensors` package
@@ -8,9 +8,15 @@ The `enable-temperature-monitor.sh` script performs four operations:
 ![image](https://github.com/jsmithers/proxmox-temperature/assets/9978858/9a499597-0646-4271-981c-517c493eb6b6)
 4. Updates the `/usr/share/perl5/PVE/Service/pvestatd.pm` script to add the sensor data to any external metrics reporting.
    * In Telgraf the data can be queried using a query similar to the following.
-   * `SELECT mean("temperature") FROM "cpu_temperature" WHERE $timeFilter GROUP BY time($__interval), "instance", "host" fill(linear)`
+     
+     `SELECT mean("temperature") FROM "cpu_temperature" WHERE $timeFilter GROUP BY time($__interval), "instance", "host" fill(linear)`
 
-## How to Install
+   * Grafana Example
+     
+     ![image](https://github.com/jsmithers/proxmox-temperature/assets/9978858/66a8fbc5-4b16-4b9b-a256-427e7737b31f)
+
+
+## How to Run
 ```bash
 curl -O --output-dir /usr/bin https://raw.githubusercontent.com/jsmithers/proxmox-temperature/main/sensors-format && chmod 775 /usr/bin/sensors-format \
  && pushd /tmp && curl -O https://raw.githubusercontent.com/jsmithers/proxmox-temperature/main/enable-temperature-monitor.sh && chmod 775 enable-temperature-monitor.sh \
