@@ -1,5 +1,5 @@
 # Proxmox Temperature
-These scripts are for enabling temperature reporting on Proxmox hosts. This functionality relies on the `lm-sensors` package. The `sensors-format` script simplifies the output of the `sensors -j` command to just `{ "cpu.0": "...", ...}`. All temperatures are reported in calcius. 
+These scripts are for enabling temperature reporting on Proxmox hosts. This functionality relies on the `lm-sensors` package. The `sensors-format` script simplifies the output of the `sensors -j` command to just `{ "cpu.0": "...", ...}`. All temperatures are reported in celsius. 
 
 The `enable-temperature-monitor.sh` script performs four operations:
 1. Installs the `lm-sensors` package
