@@ -31,8 +31,8 @@ if [ ! -z "${line}" ]; then
   endLine=$(expr "$line" + "5")
 
   functionData="function(value){\n              if (value) {\n                var values = Object.values(value);\n                var sum = values.map((entry) => {\n                  var decimalMatches = entry.match(/-?\d+(\.\d+)?/);\n                  if (decimalMatches) {\n                    return Number.parseFloat(decimalMatches[0]);\n                  }\n\n                  return null;\n                }).filter((entry) => !Number.isNaN(entry))\n                .reduce((value1, value2) => value1 + value2);\n                var average = sum / values.length;\n                return \"Average: \" + average + \" C\";\n              } else {\n                return \"Not Available\";\n              }";
-  additionalEntry=",\n        {\n            itemId: 'thermal',\n            colspan: 2,\n            printBar: false,\n            title: gettext('CPU Thermal State'),\n            textField: 'thermalstate',\n            renderer:${functionData},\n            },\n        }"
-  sed -i "${line}${endLine}s@}@}${additionalEntry}@g" /usr/share/pve-manager/js/pvemanagerlib.js
+  additionalEntry=",\n        {\n            itemId: 'thermal',\n            colspan: 2,\n            printBar: false,\n            title: gettext('CPU Thermal State'),\n            textField: 'thermalstate',\n            renderer:${functionData}\n            },\n        }"
+  sed -i "${line},${endLine}s@}@}${additionalEntry}@g" /usr/share/pve-manager/js/pvemanagerlib.js
   IS_MODIFIED=true
 else 
   echo "'pvemanagerlib.js' does not match the criteria for modification - bodyPadding: '15 5 15 5', skipping modification..."
